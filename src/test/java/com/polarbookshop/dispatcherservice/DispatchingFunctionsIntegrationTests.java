@@ -25,6 +25,19 @@ public class DispatchingFunctionsIntegrationTests {
     }
 
     @Test
+    void labelOrder(){
+        Function<Flux<Long>, Flux<OrderDispatchedMessage>> label = catalog.lookup(
+                Function.class, "label");
+        Flux<Long> orderId = Flux.just(121L);
+
+        StepVerifier.create(label.apply(orderId))
+                .expectNextMatches(dispatchedOrder ->
+                        dispatchedOrder.equals(new OrderDispatchedMessage(121L)))
+                .verifyComplete();
+
+    }
+
+    @Test
     void packAndLabelOrder() {
         Function<OrderAcceptedMessage ,Flux<OrderDispatchedMessage>>
                 packAndLabel = catalog.lookup(
