@@ -9,11 +9,20 @@ import reactor.test.StepVerifier;
 
 import java.util.function.Function;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @FunctionalSpringBootTest
 public class DispatchingFunctionsIntegrationTests {
 
     @Autowired
     private FunctionCatalog catalog;
+
+    @Test
+    void packOrder(){
+        Function<OrderAcceptedMessage, Long> pack = catalog.lookup(Function.class, "pack");
+        long orderId = 121;
+        assertThat(pack.apply(new OrderAcceptedMessage(orderId))).isEqualTo(orderId);
+    }
 
     @Test
     void packAndLabelOrder() {
