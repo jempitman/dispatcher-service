@@ -3,7 +3,14 @@ server:
 spring:
   application:
     name: dispatcher-service
+  config:
+    import: "optional:configserver:"
   cloud:
+    config:
+      uri: http://localhost:8888
+      request-connect-timeout: 5000 #5s
+      request-read-timeout: 5000 #5s
+      fail-fast: false #set to true in production
     function:
       definition: pack|label
     stream:
