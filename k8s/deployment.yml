@@ -40,3 +40,10 @@ spec:
               port: 9003
             initialDelaySeconds: 90
             periodSeconds: 15
+          volumeMounts:
+            - mountPath: /workspace/config
+              name: dispatcher-config-volume
+      volumes:
+        - name: dispatcher-config-volume
+          configMap:
+            name: dispatcher-config
